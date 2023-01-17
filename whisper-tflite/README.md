@@ -4,3 +4,6 @@ A port of Open-AI Whisper for TensorFlow Lite.
   
 Whisper original repository: https://github.com/openai/whisper
 Whisper-TFlite repository: https://github.com/usefulsensors/openai-whisper/
+
+Tested with:
+- Arm64 - Debian 11 - Python 3.9
