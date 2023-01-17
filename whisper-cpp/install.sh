@@ -2,7 +2,7 @@
 echo "Installing Whisper.Cpp ..."
 sudo apt update
 sudo apt install -y --no-install-recommends git build-essential
-if [ -n "$1" ] && [ "$1" == "BLAS" ]]; then
+if [ -n "$1" ] && [ "$1" == "BLAS" ]; then
 	echo 'Checking OpenBLAS package'
 	sudo apt install -y --no-install-recommends libopenblas-dev
 else
@@ -22,7 +22,7 @@ if [ ! -f "models/ggml-base.bin" ]; then
 	bash ./models/download-ggml-model.sh base
 fi
 echo "Running build process ..."
-if [ -n "$1" ] && [ "$1" == "BLAS" ]]; then
+if [ -n "$1" ] && [ "$1" == "BLAS" ]; then
 	make clean
 	WHISPER_OPENBLAS=1 && make && make bench
 else
