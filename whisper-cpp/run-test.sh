@@ -8,8 +8,9 @@ waves=(
 
 THREADS=2
 MODEL="tiny"
+echo "Using model '$MODEL' with $THREADS threads"
+echo ""
 
-echo "Using model $MODEL with $THREADS threads"
 start_t=$(date +"%s.%N")
 for wave in ${waves[@]}; do
   ./main -m "models/ggml-${MODEL}.bin" -f "$wave" -t $THREADS

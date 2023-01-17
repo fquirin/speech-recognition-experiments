@@ -7,3 +7,4 @@ Repositories:
 
 Tested with:
 - Arm64 - Debian 11
+- Intel x86 - Debian 11
