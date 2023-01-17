@@ -24,7 +24,7 @@ fi
 echo "Running build process ..."
 if [ -n "$1" ] && [ "$1" == "BLAS" ]; then
 	make clean
-	WHISPER_OPENBLAS=1 && make && make bench
+	WHISPER_OPENBLAS=1 make && make bench
 else
 	make clean && make && make bench
 fi
