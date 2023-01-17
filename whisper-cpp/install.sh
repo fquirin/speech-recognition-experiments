@@ -11,7 +11,7 @@ mkdir -p models
 if [ ! -f "models/ggml-tiny.bin" ]; then
 	bash ./models/download-ggml-model.sh tiny
 fi
-if [ ! -f "models/ggml-tiny.bin" ]; then
+if [ ! -f "models/ggml-base.bin" ]; then
 	bash ./models/download-ggml-model.sh base
 fi
 echo "Running build process ..."
