@@ -1,7 +1,7 @@
 #!/bin/bash
 echo "Installing Whisper.Cpp ..."
 sudo apt update
-sudo apt install -y --no-install-recommends git build_essential
+sudo apt install -y --no-install-recommends git build-essential
 #only for stream:
 #sudo apt install -y --no-install-recommends libsdl2-dev
 echo "Cloning and model download ..."
