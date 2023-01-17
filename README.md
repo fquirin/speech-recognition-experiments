@@ -1,2 +1,3 @@
-# speech-recognition-experiments
-Experiments to check out different speech recognition systems for SEPIA Framework
+# Speech Recognition Experiments
+
+Experiments to check out different ASR/STT systems and evaluate integration into [SEPIA STT-Server](https://github.com/SEPIA-Framework/sepia-stt-server).
