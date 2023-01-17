@@ -5,7 +5,8 @@ sudo apt install -y --no-install-recommends git build-essential
 #only for stream:
 #sudo apt install -y --no-install-recommends libsdl2-dev
 echo "Cloning and model download ..."
-git clone https://github.com/ggerganov/whisper.cpp .
+git clone https://github.com/ggerganov/whisper.cpp
+cd whisper.cpp
 mkdir -p models
 if [ ! -f "models/ggml-tiny.bin" ]; then
 	bash ./models/download-ggml-model.sh tiny

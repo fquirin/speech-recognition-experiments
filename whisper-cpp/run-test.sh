@@ -1,7 +1,9 @@
 #!/bin/bash
+cd whisper.cpp
+
 waves=(
-"../test-files/en_speech_jfk_11s.wav"
-"../test-files/en_sh_lights_70pct_4s.wav"
+"../../test-files/en_speech_jfk_11s.wav"
+"../../test-files/en_sh_lights_70pct_4s.wav"
 )
 
 THREADS=2
