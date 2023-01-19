@@ -4,25 +4,41 @@ import wave
 import argparse
 #import json
 
-print(f'Importing tensorflow and numpy')
-import tensorflow as tf
-#import tflite_runtime.interpreter as tf
+parser = argparse.ArgumentParser(description="Running Whisper TFlite test inference.")
+parser.add_argument("-f", "--folder", default="../test-files/", help="Folder with WAV input files")
+parser.add_argument("-m", "--model", default="models/whisper.tflite", help="Path to model")
+parser.add_argument("-t", "--threads", default=2, help="Threads used")
+parser.add_argument("-l", "--lang", default="en", help="Language used")
+parser.add_argument("-r", "--runtime", default="1", help="Tensorflow runtime, 1: 'tf.lite' or 2: 'tflite_runtime'")
+args = parser.parse_args()
+
+if args.runtime == "1":
+    print(f'Importing tensorflow (for tf.lite)')
+    import tensorflow as tf
+else:
+    print(f'Importing tflite_runtime')
+    import tflite_runtime.interpreter as tf
+
+print(f'Importing numpy')
 import numpy as np
 #import torch
 
 print(f'Importing whisper')
 import whisper
 
-parser = argparse.ArgumentParser(description="Running Whisper TFlite test inference.")
-parser.add_argument("-f", "--folder", default="../test-files/", help="Folder with WAV input files")
-parser.add_argument("-m", "--model", default="models/whisper.tflite", help="Path to model")
-parser.add_argument("-t", "--threads", default=2, help="Threads used")
-args = parser.parse_args()
-
 model_path = args.model
 print(f'Loading tflite model {model_path} ...')
-interpreter = tf.lite.Interpreter(model_path, num_threads=int(args.threads))
+if args.runtime == "1":
+    interpreter = tf.lite.Interpreter(model_path, num_threads=int(args.threads))
+else:
+    interpreter = tf.Interpreter(model_path, num_threads=int(args.threads))
 interpreter.allocate_tensors()
+input_tensor = interpreter.get_input_details()[0]['index']
+output_tensor = interpreter.get_output_details()[0]['index']
+if args.lang == "en":
+    wtokenizer = whisper.tokenizer.get_tokenizer(False, language="en")
+else:
+    wtokenizer = whisper.tokenizer.get_tokenizer(True, language=args.lang)
 
 def transcribe(audio_file):
     print(f'\nLoading audio file: {audio_file}')
@@ -47,13 +63,10 @@ def transcribe(audio_file):
     #input_data = np.frombuffer(wf.readframes(wf.getnframes()), np.int16)
     #input_data = np.random.randn(1, 256, 256, 3)
 
-    input_details = interpreter.get_input_details()
-    interpreter.resize_tensor_input(input_details[0]['index'], input_data.shape)
-
-    interpreter.set_tensor(input_details[0]['index'], input_data)
-
     print("Invoking interpreter ...")
+    interpreter.set_tensor(input_tensor, input_data)
     interpreter.invoke()
+    output_data = interpreter.get_tensor(output_tensor)
 
     print("Preparing output data ...")
     output_details = interpreter.get_output_details()
@@ -65,14 +78,13 @@ def transcribe(audio_file):
 
     # convert tokens to text
     print("Converting tokens ...")
-    wtokenizer = whisper.tokenizer.get_tokenizer(False, language="en")
     for token in output_data:
         #print(token)
         token[token == -100] = wtokenizer.eot
         text = wtokenizer.decode(token, skip_special_tokens=True)
         print(text)
 
-    print("\nInference took {:.3}s for {:.3}s audio file.".format(
+    print("\nInference took {:.2f}s for {:.2f}s audio file.".format(
         timer() - inference_start, audio_length))
 
 test_files = os.listdir(args.folder)
