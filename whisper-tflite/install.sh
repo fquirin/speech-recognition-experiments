@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 echo "Installing Whisper-TFlite ..."
 sudo apt update
 sudo apt install -y --no-install-recommends python3-pip python3-dev python3-setuptools python3-wheel python3-venv

@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 echo "Installing Sherpa-ncnn ..."
 sudo apt update
 sudo apt install -y --no-install-recommends git build-essential
