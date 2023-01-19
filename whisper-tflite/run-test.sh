@@ -2,7 +2,9 @@
 if [ -d "venv/" ]; then
 	echo "Please make sure you've activated the Python virtual environment!"
 	echo "Use: source venv/bin/activate"
-	echo ""
+else
+	echo "No Python virtual environment found."
 fi
+echo ""
 time python3 test.py
 

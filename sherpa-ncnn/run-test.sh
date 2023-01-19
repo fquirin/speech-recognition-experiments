@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -e
 
+waves=($(ls ../test-files/*.wav))
+
 cd sherpa-ncnn
 EXE="./build/bin/sherpa-ncnn"
 which $EXE
@@ -11,14 +13,9 @@ echo "Model: $MODEL"
 echo "Threads: $THREADS"
 echo ""
 
-waves=(
-"../../test-files/en_speech_jfk_11s.wav"
-"../../test-files/en_sh_lights_70pct_4s.wav"
-)
-
 start_t=$(date +"%s.%N")
 for wave in ${waves[@]}; do
-  echo "Transcribing file: $wave"
+  echo "Transcribing file: ../$wave"
   time $EXE \
     $MODEL/tokens.txt \
     $MODEL/encoder_jit_trace-pnnx.ncnn.param \
@@ -27,7 +24,7 @@ for wave in ${waves[@]}; do
     $MODEL/decoder_jit_trace-pnnx.ncnn.bin \
     $MODEL/joiner_jit_trace-pnnx.ncnn.param \
     $MODEL/joiner_jit_trace-pnnx.ncnn.bin \
-    $wave "$THREADS"
+    "../$wave" "$THREADS"
     #$wave 4 greedy_search
   echo ""
 done

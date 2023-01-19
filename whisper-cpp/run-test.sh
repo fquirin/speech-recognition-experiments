@@ -1,10 +1,8 @@
 #!/bin/bash
-cd whisper.cpp
 
-waves=(
-"../../test-files/en_speech_jfk_11s.wav"
-"../../test-files/en_sh_lights_70pct_4s.wav"
-)
+waves=($(ls ../test-files/*.wav))
+
+cd whisper.cpp
 
 THREADS=2
 MODEL="tiny"
@@ -13,8 +11,8 @@ echo ""
 
 start_t=$(date +"%s.%N")
 for wave in ${waves[@]}; do
-  echo "Transcribing file: $wave"
-  ./main -m "models/ggml-${MODEL}.bin" -f "$wave" -t $THREADS
+  echo "Transcribing file: ../$wave"
+  ./main -m "models/ggml-${MODEL}.bin" -f "../$wave" -t $THREADS
   echo ""
 done
 finish_t=$(date +"%s.%N")
