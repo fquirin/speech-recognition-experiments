@@ -7,9 +7,9 @@ import argparse
 parser = argparse.ArgumentParser(description="Running Whisper TFlite test inference.")
 parser.add_argument("-f", "--folder", default="../test-files/", help="Folder with WAV input files")
 parser.add_argument("-m", "--model", default="models/whisper.tflite", help="Path to model")
-parser.add_argument("-t", "--threads", default=2, help="Threads used")
-parser.add_argument("-l", "--lang", default="en", help="Language used")
-parser.add_argument("-r", "--runtime", default="1", help="Tensorflow runtime, 1: 'tf.lite' or 2: 'tflite_runtime'")
+parser.add_argument("-t", "--threads", default=2, help="Threads used (default: 2)")
+parser.add_argument("-l", "--lang", default="en", help="Language used (default: en)")
+parser.add_argument("-r", "--runtime", default="1", help="Tensorflow runtime, use '1' (default) for tf.lite or '2' for tflite_runtime")
 args = parser.parse_args()
 
 if args.runtime == "1":
