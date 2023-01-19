@@ -13,7 +13,9 @@ echo ""
 
 start_t=$(date +"%s.%N")
 for wave in ${waves[@]}; do
+  echo "Transcribing file: $wave"
   ./main -m "models/ggml-${MODEL}.bin" -f "$wave" -t $THREADS
+  echo ""
 done
 finish_t=$(date +"%s.%N")
-echo "Took: $(expr $finish_t-$start_t | bc)s"
+echo "Total: $(expr $finish_t-$start_t | bc)s"
