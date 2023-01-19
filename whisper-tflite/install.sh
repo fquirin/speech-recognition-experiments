@@ -19,7 +19,7 @@ echo "Downloading models ..."
 mkdir -p models
 cd models
 if [ ! -f "whisper.tflite" ]; then
-	wget https://github.com/usefulsensors/openai-whisper/raw/main/models/whisper.tflite
-	#wget https://github.com/fquirin/speech-recognition-experiments/releases/download/v1.0.0/whisper.tflite
+	wget https://github.com/usefulsensors/openai-whisper/raw/main/models/whisper-tiny.en.tflite
+	#wget https://github.com/fquirin/speech-recognition-experiments/releases/download/v1.0.0/whisper-tiny.en.tflite
 fi
 echo "DONE"
