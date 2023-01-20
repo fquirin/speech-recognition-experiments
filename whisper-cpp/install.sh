@@ -18,6 +18,8 @@ cd whisper.cpp
 mkdir -p models
 if [ ! -f "models/ggml-tiny.bin" ]; then
 	bash ./models/download-ggml-model.sh tiny
+	#wget https://github.com/fquirin/speech-recognition-experiments/releases/download/v1.0.0/whisper-tiny-ggml.bin
+	#mv whisper-tiny-ggml.bin models/ggml-tiny.bin
 fi
 if [ ! -f "models/ggml-base.bin" ]; then
 	bash ./models/download-ggml-model.sh base
