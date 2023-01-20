@@ -14,7 +14,7 @@ fi
 echo "Installing packages ..."
 pip3 install --upgrade pip
 pip3 install git+https://github.com/openai/whisper.git
-pip3 install tensorflow==2.11.0 tflite==2.10.0 tensorflow_io==0.27.0
+pip3 install tensorflow==2.11.0 tflite==2.10.0 tensorflow_io==0.27.0 tflite_runtime==2.11.0
 #pip3 install tflite_runtime
 echo "Downloading models ..."
 mkdir -p models
