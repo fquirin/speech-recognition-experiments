@@ -11,4 +11,14 @@ ASR engines:
 
 ### Raspberry Pi 400 - Aarch64 - Debian Bullseye
 
+TODO
+
+| Engine | Model | File | Th | Stream | RTF | WER |
+| ------ | ----- | ---- | -- | ------ | --- | --- |
+| Whisper TFlite | Whisper tiny.en | ---- | -- | ------ | --- | --- |
+| Whisper Cpp | Whisper tiny | ---- | -- | ------ | --- | --- |
+| Sherpa ncnn | conv-emformer-transducer-small-2023-01-09 | ---- | -- | ------ | --- | --- |
+
+#### Comments
+
 TBD

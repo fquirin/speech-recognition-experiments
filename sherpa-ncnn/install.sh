@@ -2,7 +2,7 @@
 set -e
 echo "Installing Sherpa-ncnn ..."
 sudo apt update
-sudo apt install -y --no-install-recommends git build-essential
+sudo apt install -y --no-install-recommends git build-essential bc
 echo "Cloning code ..."
 git clone https://github.com/k2-fsa/sherpa-ncnn
 echo "Running build process ..."

@@ -2,7 +2,7 @@
 set -e
 echo "Installing Whisper.Cpp ..."
 sudo apt update
-sudo apt install -y --no-install-recommends git build-essential
+sudo apt install -y --no-install-recommends git build-essential bc
 if [ -n "$1" ] && [ "$1" == "BLAS" ]; then
 	echo 'Checking OpenBLAS package'
 	sudo apt install -y --no-install-recommends libopenblas-dev

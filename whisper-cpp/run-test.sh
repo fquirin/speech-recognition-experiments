@@ -6,13 +6,14 @@ cd whisper.cpp
 
 THREADS=2
 MODEL="tiny"
-echo "Using model '$MODEL' with $THREADS threads"
+LANG="en" # NOTE: supports "auto"
+echo "Using model '$MODEL' with $THREADS threads and language '$LANG'"
 echo ""
 
 start_t=$(date +"%s.%N")
 for wave in ${waves[@]}; do
   echo "Transcribing file: ../$wave"
-  ./main -m "models/ggml-${MODEL}.bin" -f "../$wave" -t $THREADS
+  ./main -m "models/ggml-${MODEL}.bin" -f "../$wave" -t $THREADS -l $LANG
   echo ""
 done
 finish_t=$(date +"%s.%N")
