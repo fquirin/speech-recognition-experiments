@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e
 echo "Installing Whisper-TFlite ..."
+echo "NOTE: This script will skip the 'fat' tensorflow packages and install only tflite_runtime."
 sudo apt update
 sudo apt install -y --no-install-recommends python3-pip python3-dev python3-setuptools python3-wheel python3-venv
 sudo apt install -y --no-install-recommends ffmpeg
@@ -14,9 +15,14 @@ fi
 echo "Installing packages ..."
 pip3 install --upgrade pip
 pip3 install git+https://github.com/openai/whisper.git
-pip3 install tensorflow==2.11.0 tflite==2.10.0 tensorflow_io==0.27.0
-echo "Using default 'tflite_runtime' (see 'slim' install for Bazel build) ..."
-pip3 install tflite_runtime
+if [ -n "$(uname -m | grep aarch64)" ]; then
+	echo "Installing 'tflite_runtime' built with Bazel for aarch64 ..."
+	pip3 install https://github.com/fquirin/speech-recognition-experiments/releases/download/v1.0.0/tflite_runtime-2.13.0-cp39-cp39-linux_aarch64.whl
+	echo "If you get errors with this 'tflite_runtime' try 'pip3 uninstall tensorflow tflite tensorflow_io'"
+else
+	echo "Using default 'tflite_runtime' ..."
+	pip3 install tflite_runtime
+fi
 echo "Downloading models ..."
 mkdir -p models
 cd models

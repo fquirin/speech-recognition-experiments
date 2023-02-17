@@ -27,11 +27,12 @@ print(f'Importing whisper')
 import whisper
 
 model_path = args.model
-print(f'Loading tflite model {model_path} ...')
+print(f'\nLoading tflite model {model_path} ...')
 if args.runtime == "1":
     interpreter = tf.lite.Interpreter(model_path, num_threads=int(args.threads))
 else:
     interpreter = tf.Interpreter(model_path, num_threads=int(args.threads))
+print(f'Threads: {args.threads}')
 interpreter.allocate_tensors()
 input_tensor = interpreter.get_input_details()[0]['index']
 output_tensor = interpreter.get_output_details()[0]['index']
@@ -54,7 +55,7 @@ def transcribe(audio_file):
 
     inference_start = timer()
 
-    print(f'Calculating mel spectrogram...')
+    print(f'\nCalculating mel spectrogram...')
     mel_from_file = whisper.audio.log_mel_spectrogram(audio_file)
     input_data = whisper.audio.pad_or_trim(mel_from_file, whisper.audio.N_FRAMES)
     input_data = np.expand_dims(input_data, 0)

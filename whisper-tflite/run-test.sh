@@ -6,5 +6,4 @@ else
 	echo "No Python virtual environment found."
 fi
 echo ""
-time python3 test.py
-
+time python3 test.py --model "models/whisper-tiny.en.tflite" --runtime 1 --threads 2
