@@ -4,7 +4,7 @@ from timeit import default_timer as timer
 import wave
 import argparse
 
-parser = argparse.ArgumentParser(description="Running Whisper TFlite test inference.")
+parser = argparse.ArgumentParser(description="Running Whisper CT2 test inference.")
 parser.add_argument("-f", "--folder", default="../test-files/", help="Folder with WAV input files")
 parser.add_argument("-m", "--model", default="models/whisper-tiny-ct2", help="Path to model")
 parser.add_argument("-l", "--lang", default="auto", help="Language used (default: auto)")
