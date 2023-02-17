@@ -1,4 +1,5 @@
 import os
+import re
 from timeit import default_timer as timer
 import wave
 import argparse
@@ -52,6 +53,15 @@ def transcribe(audio_file):
         exit (1)
     wf.close()
     print(f'Samplerate: {sample_rate_orig}, length: {audio_length}s')
+    
+    file_lang = None
+    lang_search = re.findall(r"(?:^|/)(\w\w)_", audio_file)
+    if len(lang_search) > 0:
+        file_lang = lang_search.pop()
+        if ".en" in model_path and file_lang != "en":
+            print(f"Language found in file name: {file_lang}")
+            print("Skipped file to avoid issues with '.en' model.")
+            return
 
     inference_start = timer()
 

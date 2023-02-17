@@ -45,10 +45,10 @@ def transcribe(audio_file):
     print("\nTranscribing ...")
     segments = None
     info = None
-    if "tiny.en" in model_path:
+    if ".en" in model_path:
         if file_lang is not None and file_lang != "en":
             print(f"Language found in file name: {file_lang}")
-            print("Skipped file to avoid issues with tiny.en model")
+            print("Skipped file to avoid issues with '.en' model")
         else:
             segments, info = model.transcribe(audio_file, beam_size=int(args.beamsize))
             print("Model language fixed to 'en'")
