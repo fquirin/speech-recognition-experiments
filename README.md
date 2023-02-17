@@ -3,8 +3,9 @@
 Experiments to check out different ASR/STT systems and evaluate integration into [SEPIA STT-Server](https://github.com/SEPIA-Framework/sepia-stt-server).  
   
 ASR engines:
-- [Whisper TFlite](whisper-tflite) - An efficient and fast Tensorflow Lite compatible Whisper port
-- [Whisper Cpp](whisper-cpp) - An efficient and small C++ port of Whisper
+- [Whisper org.](whisper-org) - The original Whisper version by Open-AI
+- [Whisper TFlite](whisper-tflite) - A Tensorflow Lite compatible Whisper port
+- [Whisper Cpp](whisper-cpp) - A small C++ port of Whisper
 - [Whisper CT2](whisper-ct2) - An efficient and fast CTranslate2 port of Whisper
 - [Sherpa ncnn](sherpa-ncnn) - Next-gen Kaldi implementation for streaming ASR
 
@@ -12,14 +13,18 @@ ASR engines:
 
 ### Raspberry Pi 400 - Aarch64 - Debian Bullseye
 
-Test date: 2023.02.16
+Test date: 2023.02.17
 
 | Engine | Model | File | Threads | Stream | Time | RTF | Quality |
-| ------ | ----- | ---- | -- | ------ | ---- | --- | ------- |
+| ------ | ----- | ---- | ------- | ------ | ---- | --- | ------- |
+| Whisper original | tiny | 1 | 4 | - | 5.9s | 0.54 | perfect |
+| Whisper original | tiny | 2 | 4 | - | 4.3s | 1.19 | perfect |
 | Whisper TFlite | tiny.en | 1 | 4 | - | 4.1s | 0.37 | perfect |
 | Whisper TFlite | tiny.en | 2 | 4 | - | 3.4s | 0.94 | perfect |
 | Whisper TFlite (slim) | tiny.en | 1 | 4 | - | 3.9s | 0.36 | perfect |
 | Whisper TFlite (slim) | tiny.en | 2 | 4 | - | 3.2s | 0.90 | perfect |
+| Whisper TFlite (slim) | tiny | 1 | 4 | - | 4.7s | 0.43 | perfect |
+| Whisper TFlite (slim) | tiny | 2 | 4 | - | 3.8s | 1.06 | perfect |
 | Whisper Cpp | ggml-tiny | 1 | 4 | - | 9.1s | 0.83 | perfect |
 | Whisper Cpp | ggml-tiny | 2 | 4 | - | 8.6s | 2.39 | perfect |
 | Whisper Cpp (BLAS) | ggml-tiny | 1 | 4 | - | 8.4s | 0.76 | perfect |
@@ -32,7 +37,8 @@ Test date: 2023.02.16
 Test notes:
 - File 1 is `en_speech_jfk_11s.wav`
 - File 2 is `en_sh_lights_70pct_4s.wav`
-- `Whisper TFlite (slim)` is the `tflite_runtime` package built with **Bazel** (much faster!)
+- All Whisper tests are done without language detection!
+- `Whisper TFlite (slim)` is the `tflite_runtime` package built with **Bazel** (faster than default!)
 - `Whisper Cpp` is built with default settings ('NEON = 1', 'BLAS = 0') and `Whisper Cpp (BLAS)` with OpenBlas
 - `Whisper CT2` uses the 'int8' model
 - `Quality` is a subjective impression of the transcribed result (TODO: replace with WER)
