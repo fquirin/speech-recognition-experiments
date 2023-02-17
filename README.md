@@ -22,6 +22,8 @@ Test date: 2023.02.16
 | Whisper TFlite (slim) | tiny.en | 2 | 4 | - | 3.2s | 0.90 | perfect |
 | Whisper Cpp | ggml-tiny | 1 | 4 | - | 9.1s | 0.83 | perfect |
 | Whisper Cpp | ggml-tiny | 2 | 4 | - | 8.6s | 2.39 | perfect |
+| Whisper Cpp (BLAS) | ggml-tiny | 1 | 4 | - | 8.4s | 0.76 | perfect |
+| Whisper Cpp (BLAS) | ggml-tiny | 2 | 4 | - | 8.0s | 2.22 | perfect |
 | Whisper CT2 | whisper-tiny-ct2 | 1 | 4 | - | 3.9s | 0.36 | perfect |
 | Whisper CT2 | whisper-tiny-ct2 | 2 | 4 | - | 3.2s | 0.90 | perfect |
 | Sherpa ncnn | small-2023-01-09 | 1 | 4 | + | 1.97s | 0.18 | okayish |
@@ -31,7 +33,7 @@ Test notes:
 - File 1 is `en_speech_jfk_11s.wav`
 - File 2 is `en_sh_lights_70pct_4s.wav`
 - `Whisper TFlite (slim)` is the `tflite_runtime` package built with **Bazel** (much faster!)
-- `Whisper Cpp` is built with default settings ('NEON = 1', 'BLAS = 0')
+- `Whisper Cpp` is built with default settings ('NEON = 1', 'BLAS = 0') and `Whisper Cpp (BLAS)` with OpenBlas
 - `Whisper CT2` uses the 'int8' model
 - `Quality` is a subjective impression of the transcribed result (TODO: replace with WER)
 - Sherpa model `small-2023-01-09` full name is `conv-emformer-transducer-small-2023-01-09`
