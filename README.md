@@ -20,8 +20,8 @@ Test date: 2023.02.16
 | Whisper TFlite | tiny.en | 2 | 4 | - | 3.4s | 0.94 | perfect |
 | Whisper TFlite (slim) | tiny.en | 1 | 4 | - | 3.9s | 0.36 | perfect |
 | Whisper TFlite (slim) | tiny.en | 2 | 4 | - | 3.2s | 0.90 | perfect |
-| Whisper Cpp | ggml-tiny.en | 1 | 4 | - | 9.5s | 0.86 | perfect |
-| Whisper Cpp | ggml-tiny.en | 2 | 4 | - | 9.1s | 2.53 | perfect |
+| Whisper Cpp | ggml-tiny | 1 | 4 | - | 9.1s | 0.83 | perfect |
+| Whisper Cpp | ggml-tiny | 2 | 4 | - | 8.6s | 2.39 | perfect |
 | Whisper CT2 | whisper-tiny-ct2 | 1 | 4 | - | 3.9s | 0.36 | perfect |
 | Whisper CT2 | whisper-tiny-ct2 | 2 | 4 | - | 3.2s | 0.90 | perfect |
 | Sherpa ncnn | small-2023-01-09 | 1 | 4 | + | 1.97s | 0.18 | okayish |
