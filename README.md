@@ -14,7 +14,7 @@ ASR engines:
 
 Test date: 2023.02.16
 
-| Engine | Model | File | Th | Stream | Time | RTF | Quality |
+| Engine | Model | File | Threads | Stream | Time | RTF | Quality |
 | ------ | ----- | ---- | -- | ------ | ---- | --- | ------- |
 | Whisper TFlite | tiny.en | 1 | 4 | - | 4.1s | 0.37 | perfect |
 | Whisper TFlite | tiny.en | 2 | 4 | - | 3.4s | 0.94 | perfect |
@@ -28,8 +28,8 @@ Test date: 2023.02.16
 | Sherpa ncnn | small-2023-01-09 | 2 | 4 | + | 0.63s | 0.18 | low |
 
 Test notes:
-- File `1` is `en_speech_jfk_11s.wav`
-- File `2` is `en_sh_lights_70pct_4s.wav`
+- File 1 is `en_speech_jfk_11s.wav`
+- File 2 is `en_sh_lights_70pct_4s.wav`
 - `Whisper TFlite (slim)` is the `tflite_runtime` package built with **Bazel** (much faster!)
 - `Whisper Cpp` is built with default settings ('NEON = 1', 'BLAS = 0')
 - `Whisper CT2` uses the 'int8' model
