@@ -3,13 +3,40 @@
 Experiments to check out different ASR/STT systems and evaluate integration into [SEPIA STT-Server](https://github.com/SEPIA-Framework/sepia-stt-server).  
   
 ASR engines:
-- [Whisper org.](whisper-org) - The original Whisper version by Open-AI
+- [Whisper org](whisper-org) - The original Whisper version by Open-AI
 - [Whisper TFlite](whisper-tflite) - A Tensorflow Lite compatible Whisper port
 - [Whisper Cpp](whisper-cpp) - A small C++ port of Whisper
 - [Whisper CT2](whisper-ct2) - An efficient and fast CTranslate2 port of Whisper
 - [Sherpa ncnn](sherpa-ncnn) - Next-gen Kaldi implementation for streaming ASR
+- Next on test roadmap: Nvidia NeMo
+
+Great engines already included in SEPIA (and therefore not tested here):
+- [Vosk](https://github.com/alphacep/vosk-api) - Fast, small, accurate, easy to customizable LMs. Works with classic Kaldi models.
+- [Coqui STT](https://github.com/coqui-ai/STT) - Successor of Mozilla's Deep Speech project. End-to-end ASR with CTC decoder and "optional" LMs.
+
+## Comments
+
+- Whisper:
+  - Whisper in any form, is very accurate, but the missing streaming support is the biggest drawback.
+  - RTF is not linear. Unfortunately the short files (<4s) need almost the same time to transcribe as the larger ones (>10s).
+  - For Raspberry Pi 4 based voice assistants you have to wait usually >3s after finishing your input to get a result (bad UX).
+  - An Orange Pi 5 with optimal Whisper is fast enough to run the 'tiny' model and get good UX (usually <1.5s inference time for every input <30s).
+  - `Whisper CT2` seems to be the best version right now for the Arm64/Aarch64 systems (RPi4 etc.). It has the same speed as the TFlite version or even faster, is smaller in size, works better with non-en languages and has a cleaner API.
+- Sherpa ncnn:
+  - Sherpa is very fast and supports streaming audio, but without language model WER is too high at the moment. Results look very promising though.
+  - Example result (file 1, JFK speech): "AND SAW MY FELLOW AMERICA AS NOT WHAT YOUR COUNTRY CAN DO FOR YOU AND WHAT YOU CAN DO FOR YOUR COUNTRY".
 
 ## Benchmarks
+
+Test notes:
+- File 1 is `en_speech_jfk_11s.wav`
+- File 2 is `en_sh_lights_70pct_4s.wav`
+- All Whisper tests are done without language detection!
+- `Whisper TFlite (slim)` is the `tflite_runtime` package built with **Bazel** (faster than default!)
+- `Whisper Cpp` is built with default settings ('NEON = 1', 'BLAS = 0') and `Whisper Cpp (BLAS)` with OpenBlas
+- `Whisper CT2` uses the 'int8' model
+- `Quality` is a subjective impression of the transcribed result (TODO: replace with WER)
+- Sherpa model `small-2023-01-09` full name is `conv-emformer-transducer-small-2023-01-09`
 
 ### Raspberry Pi 400 - Aarch64 - Debian Bullseye
 
@@ -34,23 +61,17 @@ Test date: 2023.02.17
 | Sherpa ncnn | small-2023-01-09 | 1 | 4 | + | 1.97s | 0.18 | okayish |
 | Sherpa ncnn | small-2023-01-09 | 2 | 4 | + | 0.63s | 0.18 | low |
 
-Test notes:
-- File 1 is `en_speech_jfk_11s.wav`
-- File 2 is `en_sh_lights_70pct_4s.wav`
-- All Whisper tests are done without language detection!
-- `Whisper TFlite (slim)` is the `tflite_runtime` package built with **Bazel** (faster than default!)
-- `Whisper Cpp` is built with default settings ('NEON = 1', 'BLAS = 0') and `Whisper Cpp (BLAS)` with OpenBlas
-- `Whisper CT2` uses the 'int8' model
-- `Quality` is a subjective impression of the transcribed result (TODO: replace with WER)
-- Sherpa model `small-2023-01-09` full name is `conv-emformer-transducer-small-2023-01-09`
+### Orange Pi 5 8GB - Aarch64 - Armbian Bullseye (Kernel 5.10.110-rockchip-rk3588)
 
-#### Comments
+Test date: 2023.02.19
 
-- 'Whisper':
-  - Whisper in any form, is very accurate, but the missing streaming support is the biggest drawback.
-  - RTF is not linear. Unfortunately the short files (<4s) need almost the same time to transcribe as the larger ones (>10s).
-  - For RPi4 based voice assistants you have to wait usually >3s after finishing your input to get a result.
-  - `Whisper CT2` seems to be the best version right now for the RPi4 (aarch64 systems?). It has the same speed as the TFlite version but smaller size and better API.
-- 'Sherpa ncnn':
-  - Sherpa is very fast and supports streaming audio, but without language model WER is too high.
-  - Example result (file 1, JFK speech): "AND SAW MY FELLOW AMERICA AS NOT WHAT YOUR COUNTRY CAN DO FOR YOU AND WHAT YOU CAN DO FOR YOUR COUNTRY".
+| Engine | Model | File | Threads | Stream | Time | RTF | Quality |
+| ------ | ----- | ---- | ------- | ------ | ---- | --- | ------- |
+| Whisper original | tiny | 1 | 4 | - | 3.0s | 0.27 | perfect |
+| Whisper original | tiny | 2 | 4 | - | 1.9s | 0.53 | perfect |
+| Whisper TFlite (slim) | tiny | 1 | 4 | - | 1.4s | 0.13 | perfect |
+| Whisper TFlite (slim) | tiny | 2 | 4 | - | 1.4s | 0.39 | perfect |
+| Whisper Cpp (BLAS) | ggml-tiny | 1 | 4 | - | 3.7s | 0.34 | perfect |
+| Whisper Cpp (BLAS) | ggml-tiny | 2 | 4 | - | 3.5s | 0.97 | perfect |
+| Whisper CT2 | whisper-tiny-ct2 | 1 | 4 | - | 1.3s | 0.12 | perfect |
+| Whisper CT2 | whisper-tiny-ct2 | 2 | 4 | - | 1.4s | 0.39 | perfect |
