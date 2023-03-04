@@ -8,11 +8,18 @@ ASR engines:
 - [Whisper Cpp](whisper-cpp) - A small C++ port of Whisper
 - [Whisper CT2](whisper-ct2) - An efficient and fast CTranslate2 port of Whisper
 - [Sherpa ncnn](sherpa-ncnn) - Next-gen Kaldi implementation for streaming ASR
-- Next on test roadmap: Nvidia NeMo
+- [Nvidia NeMo](nvidia-nemo) - A toolkit for various end-to-end ASR models and languages
+- Next on test roadmap: Facebook's wav2letter
 
 Great engines already included in SEPIA (and therefore not tested here):
 - [Vosk](https://github.com/alphacep/vosk-api) - Fast, small, accurate, easy to customizable LMs. Works with classic Kaldi models.
 - [Coqui STT](https://github.com/coqui-ai/STT) - Successor of Mozilla's Deep Speech project. End-to-end ASR with CTC decoder and "optional" LMs.
+
+## Installation
+
+- Each ASR experiment folder has an install bash script, simply run `bash install.sh`.
+- Sometimes you will find additional scripts to download models. They should be mentioned during installation.
+- After a successful installation use `bash run-test.sh` to run a default test. If the script uses Python you need to activate the right virtual environment first: `source venv/bin/activate`.
 
 ## Comments
 

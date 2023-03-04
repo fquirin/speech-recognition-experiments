@@ -17,14 +17,15 @@ torch.set_num_threads(int(args.threads))
 print(f"Torch threads: {torch.get_num_threads()} - Device: CPU")
 
 print("Importing nemo...")
+# Log-level:
+from nemo.utils import logging
+logging.setLevel(logging.ERROR)
+#logging.setLevel(logging.CRITICAL)
 import nemo
 # NeMo's ASR collection - this collections contains complete ASR models and
 # building blocks (modules) for ASR
 import nemo.collections.asr as nemo_asr
-from nemo.utils import logging, model_utils
-
-# Log-level:
-logging.setLevel(logging.ERROR)
+from nemo.utils import model_utils
 
 model_path = args.model
 print(f"Model path: {model_path}")
