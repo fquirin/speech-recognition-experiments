@@ -30,12 +30,14 @@ from nemo.utils import model_utils
 model_path = args.model
 print(f"Model path: {model_path}")
 
-print("Loading model...")
+print("Loading local model...")
 
 model_cfg = nemo_asr.models.ASRModel.restore_from(restore_path=model_path, return_config=True)
 classpath = model_cfg.target  # original class path
 imported_class = model_utils.import_class_by_path(classpath)  # type: ASRModel
 logging.info(f"Restoring local model : {imported_class.__name__}")
+# we can load models from online repository instead:
+#model = nemo_asr.models.ASRModel.from_pretrained(model_name, map_location=torch.device(cfg.device))
 
 # load model from checkpoint
 map_location = torch.device("cpu")
@@ -46,7 +48,7 @@ model = model.cpu()
 print("Start transcribing...")
 
 def transcribe(audio_file):
-    print(f'\nLoading audio file: {audio_file}')
+    print(f'\n---- Loading audio file: {audio_file}')
     wf = wave.open(audio_file, "rb")
     sample_rate_orig = wf.getframerate()
     audio_length = wf.getnframes() * (1 / sample_rate_orig)
