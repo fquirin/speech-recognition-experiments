@@ -14,6 +14,7 @@ parser.add_argument("-l", "--language-model", default="models/kenlm_custom.4gram
 parser.add_argument("-w", "--beam-widths", nargs='+', default=[8], type=int, help="Integer value(s) for beam_width (default: 8)")
 parser.add_argument("-a", "--beam-alphas", nargs='+', default=[0.0, 1.0, 2.0], type=float, help="Float value(s) for beam_alpha (default: 0.0 1.0 2.0)")
 parser.add_argument("-b", "--beam-betas", nargs='+', default=[0.0, 2.0, 4.0], type=float, help="Float value(s) for beam_beta (default: 0.0 2.0 4.0)")
+parser.add_argument("-v", "--all-hypos", action='store_true', help="Return all hypotheses given by beam-width instead of best.")
 parser.add_argument("-t", "--threads", default=2, help="Threads used (default: 2)")
 args = parser.parse_args()
 
@@ -51,7 +52,7 @@ class BeamSearchNGramConfig:
     # In theory this can be one of ["greedy", "beamsearch", "beamsearch_ngram"]
     decoding_mode: str = "beamsearch_ngram"  # ... but we've only implement this here
     decoding_strategy: str = "beam"  # Supports only beam for now
-    return_best_hypothesis: bool = True  # Return only "best" hypothesis or all beams
+    return_best_hypothesis: bool = not args.all_hypos  # Return only "best" hypothesis or all beams
 
     beam_width: List[int] = args.beam_widths  # One or more widths for beam search decoding, e.g. [4, 8]
     beam_alpha: List[float] = args.beam_alphas  # One or more alpha parameters for the beam search decoding, e.g. [0.0, 1.0, 2.0, 5.0]

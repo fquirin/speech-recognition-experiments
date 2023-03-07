@@ -29,7 +29,7 @@ if initial_prompt is not None:
     print(f'Initial prompt: {initial_prompt}')
 
 def transcribe(audio_file):
-    print(f'\nLoading audio file: {audio_file}')
+    print(f'\n---- Loading audio file: {audio_file}')
     wf = wave.open(audio_file, "rb")
     sample_rate_orig = wf.getframerate()
     audio_length = wf.getnframes() * (1 / sample_rate_orig)
