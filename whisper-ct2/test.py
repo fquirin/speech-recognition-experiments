@@ -8,8 +8,9 @@ parser = argparse.ArgumentParser(description="Running Whisper CT2 test inference
 parser.add_argument("-f", "--folder", default="../test-files/", help="Folder with WAV input files")
 parser.add_argument("-m", "--model", default="models/whisper-tiny-ct2", help="Path to model")
 parser.add_argument("-l", "--lang", default="auto", help="Language used (default: auto)")
-parser.add_argument("-t", "--threads", default=2, help="Threads used (default: 2)")
 parser.add_argument("-b", "--beamsize", default=1, help="Beam size used (default: 1)")
+parser.add_argument("-p", "--init-prompt", default=None, help="Initial prompt (default: None)")
+parser.add_argument("-t", "--threads", default=2, help="Threads used (default: 2)")
 args = parser.parse_args()
 
 print(f'Importing WhisperModel')
@@ -22,6 +23,10 @@ model = WhisperModel(model_path, device="cpu", compute_type="int8", cpu_threads=
 #model = WhisperModel(args.model, device="cuda", compute_type="float16")
 print(f'Threads: {args.threads}')
 print(f'Beam size: {args.beamsize}')
+
+initial_prompt=args.init_prompt
+if initial_prompt is not None:
+    print(f'Initial prompt: {initial_prompt}')
 
 def transcribe(audio_file):
     print(f'\nLoading audio file: {audio_file}')
@@ -50,17 +55,35 @@ def transcribe(audio_file):
             print(f"Language found in file name: {file_lang}")
             print("Skipped file to avoid issues with '.en' model")
         else:
-            segments, info = model.transcribe(audio_file, beam_size=int(args.beamsize))
+            segments, info = model.transcribe(
+                audio_file,
+                beam_size=int(args.beamsize),
+                initial_prompt=initial_prompt
+            )
             print("Model language fixed to 'en'")
     elif args.lang == "auto":
         if file_lang is not None:
-            segments, info = model.transcribe(audio_file, beam_size=int(args.beamsize), language=file_lang)
+            segments, info = model.transcribe(
+                audio_file,
+                beam_size=int(args.beamsize),
+                language=file_lang,
+                initial_prompt=initial_prompt
+            )
             print(f"Language found in file name: {file_lang}")
         else:
-            segments, info = model.transcribe(audio_file, beam_size=int(args.beamsize))
+            segments, info = model.transcribe(
+                audio_file,
+                beam_size=int(args.beamsize),
+                initial_prompt=initial_prompt
+            )
             print("Detected language '%s' with probability %f" % (info.language, info.language_probability))
     else:
-        segments, info = model.transcribe(audio_file, beam_size=int(args.beamsize), language=args.lang)
+        segments, info = model.transcribe(
+            audio_file,
+            beam_size=int(args.beamsize),
+            language=args.lang,
+            initial_prompt=initial_prompt
+        )
         print(f'Pre-defined language: {args.lang}')
 
     if segments is not None:
