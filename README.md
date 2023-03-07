@@ -21,7 +21,7 @@ Great engines already included in SEPIA (and therefore not tested here):
 - Sometimes you will find additional scripts to download models. They should be mentioned during installation.
 - After a successful installation use `bash run-test.sh` to run a default test. If the script uses Python you need to activate the right virtual environment first: `source venv/bin/activate`.
 
-## Comments
+## Comments and Impressions
 
 - Whisper:
   - Whisper in any form, is very accurate, but the missing streaming support is the biggest drawback.
@@ -32,6 +32,12 @@ Great engines already included in SEPIA (and therefore not tested here):
 - Sherpa ncnn:
   - Sherpa is very fast and supports streaming audio, but without language model WER is too high at the moment. Results look very promising though.
   - Example result (file 1, JFK speech): "AND SAW MY FELLOW AMERICA AS NOT WHAT YOUR COUNTRY CAN DO FOR YOU AND WHAT YOU CAN DO FOR YOUR COUNTRY".
+- Nvidia NeMo:
+  - Nvidia NeMo small models (e.g. 'en_conformer_ctc_small') are very fast and precise for clear and simple audio files.
+  - Unfortunately NeMo has no pre-trained models for streaming conformer yet (2023.03.07)
+  - Non-streaming is faster than Sherpa-ncnn but way more precise
+  - Tests below currently indicate the quality is as good as Whisper, but more complicated vocabulary and noisy audio quickly shows that Whisper still performs much better, especially compared to larger NeMo models.
+  - NeMo can be tuned easily using (phoneme free!) language models. Depending on your beam parameters (width, alpha, beta) accuracy for your LM vocabulary can increase dramatically, while it will drop for out-of-vocabulary words.
 
 ## Benchmarks
 
@@ -65,8 +71,15 @@ Test date: 2023.02.17
 | Whisper Cpp (BLAS) | ggml-tiny | 2 | 4 | - | 8.0s | 2.22 | perfect |
 | Whisper CT2 | whisper-tiny-ct2 | 1 | 4 | - | 3.9s | 0.36 | perfect |
 | Whisper CT2 | whisper-tiny-ct2 | 2 | 4 | - | 3.2s | 0.90 | perfect |
-| Sherpa ncnn | small-2023-01-09 | 1 | 4 | + | 1.97s | 0.18 | okayish |
-| Sherpa ncnn | small-2023-01-09 | 2 | 4 | + | 0.63s | 0.18 | low |
+| Sherpa ncnn | small-2023-01-09 | 1 | 4 | + | 2.0s | 0.18 | okayish |
+| Sherpa ncnn | small-2023-01-09 | 2 | 4 | + | 0.6s | 0.18 | low |
+
+Test date: 2023.03.07
+
+| Engine | Model | File | Threads | Stream | Time | RTF | Quality |
+| ------ | ----- | ---- | ------- | ------ | ---- | --- | ------- |
+| Nvidia NeMo | en_conformer_ctc_small | 1 | 4 | - | 1.1s | 0.10 | perfect |
+| Nvidia NeMo | en_conformer_ctc_small | 2 | 4 | - | 0.5s | 0.14 | perfect |
 
 ### Orange Pi 5 8GB - Aarch64 - Armbian Bullseye (Kernel 5.10.110-rockchip-rk3588)
 
@@ -82,3 +95,12 @@ Test date: 2023.02.19
 | Whisper Cpp (BLAS) | ggml-tiny | 2 | 4 | - | 3.5s | 0.97 | perfect |
 | Whisper CT2 | whisper-tiny-ct2 | 1 | 4 | - | 1.3s | 0.12 | perfect |
 | Whisper CT2 | whisper-tiny-ct2 | 2 | 4 | - | 1.4s | 0.39 | perfect |
+
+Test date: 2023.03.07
+
+| Engine | Model | File | Threads | Stream | Time | RTF | Quality |
+| ------ | ----- | ---- | ------- | ------ | ---- | --- | ------- |
+| Sherpa ncnn | small-2023-01-09 | 1 | 4 | + | 0.6s | 0.05 | okayish |
+| Sherpa ncnn | small-2023-01-09 | 2 | 4 | + | 0.2s | 0.06 | low |
+| Nvidia NeMo | en_conformer_ctc_small | 1 | 4 | - | 0.4s | 0.03 | perfect |
+| Nvidia NeMo | en_conformer_ctc_small | 2 | 4 | - | 0.2s | 0.06 | perfect |
