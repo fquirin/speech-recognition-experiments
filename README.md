@@ -35,8 +35,8 @@ Great engines already included in SEPIA (and therefore not tested here):
 - Nvidia NeMo:
   - Nvidia NeMo small models (e.g. 'en_conformer_ctc_small') are very fast and precise for clear and simple audio files.
   - Unfortunately NeMo has no pre-trained models for streaming conformer yet (2023.03.07)
-  - Non-streaming is faster than Sherpa-ncnn but way more precise
-  - Tests below currently indicate the quality is as good as Whisper, but more complicated vocabulary and noisy audio quickly shows that Whisper still performs much better, especially compared to larger NeMo models.
+  - Non-streaming is a bit faster than Sherpa-ncnn but way more precise
+  - The test results below currently indicate the quality is as good as Whisper, but more complicated vocabulary and noisy audio quickly shows that Whisper still performs much better, especially compared to larger NeMo models.
   - NeMo can be tuned easily using (phoneme free!) language models. Depending on your beam parameters (width, alpha, beta) accuracy for your LM vocabulary can increase dramatically, while it will drop for out-of-vocabulary words.
 
 ## Benchmarks

@@ -1,19 +1,26 @@
 #!/bin/bash
 
-waves=($(ls ../test-files/*.wav))
-
-cd whisper.cpp
+TEST_FILES="../test-files/"
+waves=($(ls "$TEST_FILES"*.wav))
 
 THREADS=2
 MODEL="tiny"
 LANG="en" # NOTE: supports "auto"
-echo "Using model '$MODEL' with $THREADS threads and language '$LANG'"
+BEAM_SIZE=1
+INIT_PROMPT=""
+
+echo "Using model '$MODEL' with language '$LANG', beam-size=$BEAM_SIZE and $THREADS threads"
+if [ ! -z "$INIT_PROMPT" ]; then
+	echo "Initial prompt: $INIT_PROMPT"
+fi
 echo ""
+
+cd whisper.cpp
 
 start_t=$(date +"%s.%N")
 for wave in ${waves[@]}; do
   echo "Transcribing file: ../$wave"
-  ./main -m "models/ggml-${MODEL}.bin" -f "../$wave" -t $THREADS -l $LANG
+  ./main -m "models/ggml-${MODEL}.bin" -f "../$wave" -t $THREADS -l $LANG --beam-size $BEAM_SIZE --prompt "$INIT_PROMPT"
   echo ""
 done
 finish_t=$(date +"%s.%N")
