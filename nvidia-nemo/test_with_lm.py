@@ -11,7 +11,7 @@ parser.add_argument("-f", "--folder", default="../test-files/", help="Folder wit
 parser.add_argument("-s", "--transcriptions", default=None, help="Folder with transcriptions for WAV files")
 parser.add_argument("-m", "--acoustic-model", default="models/stt_en_conformer_ctc_small.nemo", help="Path to acoustic model")
 parser.add_argument("-l", "--language-model", default="models/kenlm_custom.4gram", help="Path to n-gram language model")
-parser.add_argument("-w", "--beam-widths", nargs='+', default=[8], type=int, help="Integer value(s) for beam_width (default: 8)")
+parser.add_argument("-w", "--beam-widths", nargs='+', default=[8], type=int, help="Integer value(s) for beam_width (aka beam-size) (default: 8)")
 parser.add_argument("-a", "--beam-alphas", nargs='+', default=[0.0, 1.0, 2.0], type=float, help="Float value(s) for beam_alpha (default: 0.0 1.0 2.0)")
 parser.add_argument("-b", "--beam-betas", nargs='+', default=[0.0, 2.0, 4.0], type=float, help="Float value(s) for beam_beta (default: 0.0 2.0 4.0)")
 parser.add_argument("-v", "--all-hypos", action='store_true', help="Return all hypotheses given by beam-width instead of best.")
@@ -36,22 +36,21 @@ from nemo.utils import logging
 
 
 class BeamSearchNGramConfig:
-    # The path of the '.nemo' file of the ASR model or the name of a pretrained model (ngc / huggingface)
-    nemo_model_file: str = "models/stt_en_conformer_ctc_small.nemo"
+    # The path of the '.nemo' file of the ASR model
+    nemo_model_file: str = args.acoustic_model
 
-    # File paths
-    kenlm_model_file: Optional[str] = "models/kenlm_custom.4gram"  # The path of the KenLM binary model file
+    # The path of the KenLM binary model file
+    kenlm_model_file: Optional[str] = args.language_model
 
-    # Parameters for inference
-    acoustic_batch_size: int = 1  # The batch size to calculate log probabilities
-    device: str = "cpu"  # The device to load the model onto to calculate log probabilities
+    # The (torch) device to load the model onto to calculate log probabilities
+    device: str = "cpu"
 
     # Beam Search hyperparameters
 
     # The decoding scheme to be used for evaluation.
     # In theory this can be one of ["greedy", "beamsearch", "beamsearch_ngram"]
     decoding_mode: str = "beamsearch_ngram"  # ... but we've only implement this here
-    decoding_strategy: str = "beam"  # Supports only beam for now
+    decoding_strategy: str = "beam"  # Supports 'beam' and new: 'flashlight'
     return_best_hypothesis: bool = not args.all_hypos  # Return only "best" hypothesis or all beams
 
     beam_width: List[int] = args.beam_widths  # One or more widths for beam search decoding, e.g. [4, 8]
@@ -143,7 +142,8 @@ def transcribe(
         #transcribe() generates a text applying a CTC greedy decoder to raw probabilities distribution over
         #alphabet's characters from ASR model. We can get those raw probabilities with logprobs=True argument.
         print("Calculating character probabilities ...")
-        all_log_probs = asr_model.transcribe(paths2audio_files=[audio_file], batch_size=cfg.acoustic_batch_size, logprobs=True)
+        batch_size: int = 1  # 1 file at a time
+        all_log_probs = asr_model.transcribe(paths2audio_files=[audio_file], batch_size=batch_size, logprobs=True)
     char_log_probs = all_log_probs[0]  #we work with a single audio file
     
     prob_time = timer() - start_time
