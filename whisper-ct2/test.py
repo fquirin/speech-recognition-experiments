@@ -11,6 +11,8 @@ parser.add_argument("-l", "--lang", default="auto", help="Language used (default
 parser.add_argument("-b", "--beamsize", default=1, help="Beam size used (default: 1)")
 parser.add_argument("-p", "--init-prompt", default=None, help="Initial prompt (default: None)")
 parser.add_argument("-v", "--verbose", action="store_true", help="Get word-level ts and confidence (default: false)")
+parser.add_argument("--vad", action="store_true", help="Use VAD to filter silence (>2s by default).")
+parser.add_argument("--fp32", action="store_true", help="Use float32 compute type for models.")
 parser.add_argument("-i", "--interpret", action="store_true", help="Translate to 'en' (default: false)")
 parser.add_argument("-t", "--threads", default=2, help="Threads used (default: 2)")
 args = parser.parse_args()
@@ -21,10 +23,12 @@ from faster_whisper import WhisperModel
 # run on CPU with INT8:
 model_path = args.model
 print(f'\nLoading model {model_path} ...')
-model = WhisperModel(model_path, device="cpu", compute_type="int8", cpu_threads=int(args.threads))
+compute_type = "float32" if args.fp32 else "int8"
+model = WhisperModel(model_path, device="cpu", compute_type=compute_type, cpu_threads=int(args.threads))
 #model = WhisperModel(args.model, device="cuda", compute_type="float16")
 print(f'Threads: {args.threads}')
 print(f'Beam size: {args.beamsize}')
+print(f'Compute type: {compute_type}')
 
 initial_prompt=args.init_prompt
 if initial_prompt is not None:
@@ -77,7 +81,8 @@ def transcribe(audio_file):
             language=trans_lang,
             initial_prompt=initial_prompt,
             word_timestamps=args.verbose,
-            task="transcribe" if not args.interpret else "translate"
+            task="transcribe" if not args.interpret else "translate",
+            vad_filter=args.vad
         )
         if trans_lang is None or trans_lang == "auto":
             print("Detected language '%s' with probability %f" % (info.language, info.language_probability))

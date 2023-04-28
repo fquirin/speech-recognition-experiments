@@ -3,12 +3,13 @@ model="tiny"
 if [ -n "$1" ]; then
 	model=$1
 else
-	echo "Please specify the model to download."
+	echo "Please specify the model to download/quantize."
 	echo "Examples: tiny, tiny.en, base, small, ..."
 	exit
 fi
 echo "Downloading and converting: openai/whisper-$1 (from https://huggingface.co/openai)..."
-echo "NOTE: If download fails check the experiments repository for model files."
+echo "Quantization: int8"
+echo "NOTE: If download fails check the git repository for model files."
 echo ""
 mkdir -p models
 if [ ! -d "models/whisper-$1-ct2" ]; then
