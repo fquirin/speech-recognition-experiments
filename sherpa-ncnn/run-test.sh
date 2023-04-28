@@ -7,7 +7,8 @@ cd sherpa-ncnn
 EXE="./build/bin/sherpa-ncnn"
 which $EXE
 
-MODEL="./models/sherpa-ncnn-conv-emformer-transducer-small-2023-01-09"
+#MODEL="./models/sherpa-ncnn-conv-emformer-transducer-small-2023-01-09"
+MODEL="./models/sherpa-ncnn-streaming-zipformer-en-2023-02-13"
 THREADS=2
 echo "Model: $MODEL"
 echo "Threads: $THREADS"

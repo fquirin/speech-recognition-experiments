@@ -19,4 +19,17 @@ if [ ! -d "sherpa-ncnn-conv-emformer-transducer-small-2023-01-09/" ]; then
 	wget https://github.com/fquirin/speech-recognition-experiments/releases/download/v1.0.0/sherpa-ncnn-conv-emformer-transducer-small-2023-01-09.zip
 	unzip sherpa-ncnn-conv-emformer-transducer-small-2023-01-09.zip -d sherpa-ncnn-conv-emformer-transducer-small-2023-01-09
 fi
+if [ ! -d "sherpa-ncnn-streaming-zipformer-en-2023-02-13/" ]; then
+	mkdir sherpa-ncnn-streaming-zipformer-en-2023-02-13
+	cd sherpa-ncnn-streaming-zipformer-en-2023-02-13
+	wget https://huggingface.co/csukuangfj/sherpa-ncnn-streaming-zipformer-en-2023-02-13/resolve/main/tokens.txt
+	wget https://huggingface.co/csukuangfj/sherpa-ncnn-streaming-zipformer-en-2023-02-13/resolve/main/encoder_jit_trace-pnnx.ncnn.param
+	wget https://huggingface.co/csukuangfj/sherpa-ncnn-streaming-zipformer-en-2023-02-13/resolve/main/encoder_jit_trace-pnnx.ncnn.bin
+	wget https://huggingface.co/csukuangfj/sherpa-ncnn-streaming-zipformer-en-2023-02-13/resolve/main/decoder_jit_trace-pnnx.ncnn.param
+	wget https://huggingface.co/csukuangfj/sherpa-ncnn-streaming-zipformer-en-2023-02-13/resolve/main/decoder_jit_trace-pnnx.ncnn.bin
+	wget https://huggingface.co/csukuangfj/sherpa-ncnn-streaming-zipformer-en-2023-02-13/resolve/main/joiner_jit_trace-pnnx.ncnn.param
+	wget https://huggingface.co/csukuangfj/sherpa-ncnn-streaming-zipformer-en-2023-02-13/resolve/main/joiner_jit_trace-pnnx.ncnn.bin
+	cd ..
+fi
+cd ..
 echo "DONE"
