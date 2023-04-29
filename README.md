@@ -9,10 +9,9 @@ ASR engines:
 - [Whisper CT2](whisper-ct2) - An efficient and fast CTranslate2 port of Whisper
 - [Sherpa ncnn](sherpa-ncnn) - Next-gen Kaldi implementation for streaming ASR
 - [Nvidia NeMo](nvidia-nemo) - A toolkit for various end-to-end ASR models and languages
-- Next on test roadmap: Facebook's wav2letter
+- [Vosk](vosk) - Fast, small, accurate (for clear audio), easy to customize. Works with classic Kaldi models. One of the core engines of SEPIA STT Server.
 
-Great engines already included in SEPIA (and therefore not tested here):
-- [Vosk](https://github.com/alphacep/vosk-api) - Fast, small, accurate, easy to customizable LMs. Works with classic Kaldi models.
+Other great engines already included in SEPIA:
 - [Coqui STT](https://github.com/coqui-ai/STT) - Successor of Mozilla's Deep Speech project. End-to-end ASR with CTC decoder and "optional" LMs.
 
 ## Installation
@@ -30,14 +29,21 @@ Great engines already included in SEPIA (and therefore not tested here):
   - An Orange Pi 5 with optimal Whisper is fast enough to run the 'tiny' model and get good UX (usually <1.5s inference time for every input <30s).
   - `Whisper CT2` seems to be the best version right now for the Arm64/Aarch64 systems (RPi4 etc.). It has the same speed as the TFlite version or even faster, is smaller in size, works better with non-en languages and has a cleaner API.
 - Sherpa ncnn:
-  - Sherpa is very fast and supports streaming audio, but without language model WER is too high at the moment. Results look very promising though.
-  - Example result (file 1, JFK speech): "AND SAW MY FELLOW AMERICA AS NOT WHAT YOUR COUNTRY CAN DO FOR YOU AND WHAT YOU CAN DO FOR YOUR COUNTRY".
+  - Sherpa is very fast and supports streaming audio, but without language model WER is a bit high at the moment. Results look very promising though.
+  - Example result (file 1, JFK speech): "AND SAW MY FELLOW AMERICANS ASK NOT WHAT YOUR COUNTRY CAN DO FOR YOU ASK WHAT YOU CAN DO FOR YOUR COUNTRY".
+  - UPDATED 2023.04.29: Included better English model.
 - Nvidia NeMo:
   - Nvidia NeMo small models (e.g. 'en_conformer_ctc_small') are very fast and precise for clear and simple audio files.
   - Unfortunately NeMo has no pre-trained models for streaming conformer yet (2023.03.07)
   - Non-streaming is a bit faster than Sherpa-ncnn but way more precise
   - The test results below currently indicate the quality is as good as Whisper, but more complicated vocabulary and noisy audio quickly shows that Whisper still performs much better, especially compared to larger NeMo models.
   - NeMo can be tuned easily using (phoneme free!) language models. Depending on your beam parameters (width, alpha, beta) accuracy for your LM vocabulary can increase dramatically, while it will drop for out-of-vocabulary words.
+- Vosk:
+  - Vosk is very small, fast, supports streaming audio and you can convert most of the classic Kaldi models to be used with it.
+  - The small models are only ~50MB and surprisingly good, even for general dictation tasks ... if your input audio isn't too noisy.
+  - The larger models are solid, but I never really use them, because they are much slower, need more RAM and don't offer much better results in my everyday tests with SEPIA assistant.
+  - If you want good accuracy in a specific domain you should train your own language model. The Vosk homepage has some documentation, but for SEPIA I use the [kaldi-adapt-lm](https://github.com/fquirin/kaldi-adapt-lm) repo.
+  - Vosk with a custom LM is probably your best ASR choice on low-end hardware.
 
 ## Benchmarks
 
