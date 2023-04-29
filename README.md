@@ -39,11 +39,11 @@ Other great engines already included in SEPIA:
   - The test results below currently indicate the quality is as good as Whisper, but more complicated vocabulary and noisy audio quickly shows that Whisper still performs much better, especially compared to larger NeMo models.
   - NeMo can be tuned easily using (phoneme free!) language models. Depending on your beam parameters (width, alpha, beta) accuracy for your LM vocabulary can increase dramatically, while it will drop for out-of-vocabulary words.
 - Vosk:
-  - Vosk is very small, fast, supports streaming audio and you can convert most of the classic Kaldi models to be used with it.
-  - The small models are only ~50MB and surprisingly good, even for general dictation tasks ... if your input audio isn't too noisy.
+  - Vosk is very small, fast, supports streaming audio and you can convert most of the classic Kaldi models to work with it.
+  - The small models are only ~50MB and surprisingly good, even for general dictation tasks ... if your input audio isn't too noisy and your vocabulary not too complicated.
   - The larger models are solid, but I never really use them, because they are much slower, need more RAM and don't offer much better results in my everyday tests with SEPIA assistant.
   - If you want good accuracy in a specific domain you should train your own language model. The Vosk homepage has some documentation, but for SEPIA I use the [kaldi-adapt-lm](https://github.com/fquirin/kaldi-adapt-lm) repo.
-  - Vosk with a custom LM is probably your best ASR choice on low-end hardware.
+  - Vosk with a custom LM is probably your best open-source ASR choice on low-end hardware.
 
 ## Benchmarks
 
