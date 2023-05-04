@@ -15,29 +15,16 @@ fi
 echo "Installing packages ..."
 pip3 install --upgrade pip
 pip3 install Cython
-if [ -n "$(uname -m | grep aarch64)" ]; then
-	#ARM 64bit
-	pip3 install nemo_toolkit[asr]
-elif [ -n "$(uname -m | grep armv7l)" ]; then
+if [ -n "$(uname -m | grep armv7l)" ]; then
 	#ARM 32bit - too much trouble
 	echo "Sorry, but ARM 32bit is currently not supported!"
 	exit 1
 else
-	#x86_64 - skip GPU stuff by fetching torch+cpu in advance - this will greatly reduce installation size
-	PY_VERSION=$(python3 --version)
-	if [ $(echo "$PY_VERSION" | grep 3.9 | wc -l) -eq 1 ]; then
-		echo "Python 3.9 detected, using available torch+cpu wheel"
-		pip3 install https://download.pytorch.org/whl/cpu/torch-1.13.1%2Bcpu-cp39-cp39-linux_x86_64.whl
-	elif [ $(echo "$PY_VERSION" | grep 3.8 | wc -l) -eq 1 ]; then
-		echo "Python 3.8 detected, using available torch+cpu wheel"
-		pip3 install https://download.pytorch.org/whl/cpu/torch-1.13.1%2Bcpu-cp38-cp38-linux_x86_64.whl
-	elif [ $(echo "$PY_VERSION" | grep 3.10 | wc -l) -eq 1 ]; then
-		echo "Python 3.10 detected, using available torch+cpu wheel"
-		pip3 install https://download.pytorch.org/whl/cpu/torch-1.13.1%2Bcpu-cp310-cp310-linux_x86_64.whl
-	else
-		echo "NOTE: If you don't need GPU support you can install torch+cpu to reduce size."
-		echo "Check out: https://download.pytorch.org/whl/cpu/"
-	fi
+	#skip GPU stuff by fetching torch+cpu in advance - this will greatly reduce installation size
+	echo "Installing torch for CPU (change script if you need GPU) ..."
+	pip3 install torch==1.13.1 torchaudio==0.13.1 --index-url https://download.pytorch.org/whl/cpu
+	echo "Installing NeMo package ..."
+	#pip3 install git+https://github.com/NVIDIA/NeMo.git@{main}#egg=nemo_toolkit[asr]
 	pip3 install nemo_toolkit[asr]
 fi
 echo "DONE"
