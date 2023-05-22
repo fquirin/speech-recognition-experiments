@@ -13,5 +13,3 @@ Tested with:
 
 Apache License 2.0:  
 https://github.com/dscripka/openWakeWord/blob/main/LICENSE  
-  
-Check the models page for individual model licenses (usually Apache License 2.0 as well).

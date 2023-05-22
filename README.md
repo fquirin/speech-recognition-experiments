@@ -11,7 +11,10 @@ ASR engines:
 - [Nvidia NeMo](nvidia-nemo) - A toolkit for various end-to-end ASR models and languages
 - [Vosk](vosk) - Fast, small, accurate (for clear audio), easy to customize. Works with classic Kaldi models. One of the core engines of SEPIA STT Server.
 
-Other great engines already included in SEPIA:
+Wake-Word detection:
+- [OpenWakeWord](open-wake-word) - An robust, NN based, open-source wake-word detection framework with a focus on performance and simplicity.
+
+Other great ASR engines already included in SEPIA:
 - [Coqui STT](https://github.com/coqui-ai/STT) - Successor of Mozilla's Deep Speech project. End-to-end ASR with CTC decoder and "optional" LMs.
 
 ## Installation
